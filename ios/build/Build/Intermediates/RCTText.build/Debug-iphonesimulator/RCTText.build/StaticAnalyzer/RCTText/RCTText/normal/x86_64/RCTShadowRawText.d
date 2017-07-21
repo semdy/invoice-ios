@@ -1,0 +1,28 @@
+dependencies: \
+  /Library/invoice/node_modules/react-native/Libraries/Text/RCTShadowRawText.m \
+  /Library/invoice/node_modules/react-native/Libraries/Text/RCTShadowRawText.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUIManager.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTViewManager.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTEventDispatcher.h \
+  /Library/invoice/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h
