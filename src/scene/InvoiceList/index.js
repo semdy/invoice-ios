@@ -182,6 +182,7 @@ class InvoiceList extends PureComponent {
     fetch.get("invoiceList", params).then(res => {
       if( res.invoiceList.length === 0 ){
         this.setState({
+          data: [],
           loaded: true
         });
 
