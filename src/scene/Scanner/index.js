@@ -30,7 +30,6 @@ export default class DefaultScreen extends Component {
     this.state = {
       loaded: true,
       cameraEnable: false,
-      showCaptureHint: true,
       torchMode: 'off'
     };
 
@@ -86,10 +85,6 @@ export default class DefaultScreen extends Component {
   }
 
   handleCapture() {
-    this.setState({
-      showCaptureHint: false,
-    });
-
     //this.props.switchMode("camera");
     this.props.navigation.navigate("Camera");
   }
@@ -118,7 +113,7 @@ export default class DefaultScreen extends Component {
   }
 
   render() {
-    let {loaded, cameraEnable, showCaptureHint} = this.state;
+    let {loaded, cameraEnable} = this.state;
     return (
       <View style={styles.container}>
         <Header
@@ -150,7 +145,7 @@ export default class DefaultScreen extends Component {
           this._renderMenu()
         }
         {
-          cameraEnable && showCaptureHint &&
+          cameraEnable &&
           <View style={styles.captureHint}>
             <Text style={styles.captureHintText}>二维码无法识别请拍摄发票</Text>
             <Icon size="small" name="angle-down" style={styles.captureHintIcon}/>

@@ -33,11 +33,13 @@ const INVOICE_STATUS = {
   "waiting": {text: "查询中", color: "#666"}
 };
 
+let keyIndex = 0;
 function object2Array(obj){
   let arr = [];
   for(let i in obj){
     arr.push({
       date: i,
+      key: keyIndex++,
       list: obj[i]
     });
   }
@@ -209,7 +211,7 @@ class InvoiceList extends PureComponent {
   }
 
   keyExtractor(item) {
-    return item.date;
+    return item.key;
   }
 
   renderHeader(){
