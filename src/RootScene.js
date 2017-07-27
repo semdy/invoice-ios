@@ -8,8 +8,6 @@ import { StackNavigator } from 'react-navigation';
 import Login from './scene/Login';
 import Home from './scene/Home';
 import ScanCamera from './scene/ScanCamera';
-import Scanner from './scene/Scanner';
-import Camera from './scene/Camera';
 import MyInfo from './scene/MyInfo';
 import InvoiceList from './scene/InvoiceList';
 import Detail from './scene/Detail';
@@ -44,17 +42,11 @@ const Navigator = StackNavigator(
     Home: {
       screen: Home
     },
-    Login: {
-      screen: Login
-    },
-    Scanner: {
-      screen: Scanner
-    },
-    Camera: {
-      screen: Camera
-    },
     InvoiceList: {
       screen: InvoiceList
+    },
+    Login: {
+      screen: Login
     },
     MyInfo: {
       screen: MyInfo
