@@ -5,12 +5,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  DeviceEventEmitter,
-  Platform
+  DeviceEventEmitter
 } from "react-native";
 
 import Toast from 'react-native-root-toast';
-import Camera from 'react-native-camera';
 import Spinner from '../../component/spinner';
 import Icon from '../../component/icon';
 import fetch from '../../service/fetch';
@@ -20,19 +18,10 @@ export default class DefaultScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.camera = null;
     this.uploadType = "newUpload";
     this.invoiceInfo = {};
 
     this.state = {
-      camera: {
-        aspect: Camera.constants.Aspect.fill,
-        captureTarget: Camera.constants.CaptureTarget.memory,
-        type: Camera.constants.Type.back,
-        orientation: Camera.constants.Orientation.portrait,
-        torchMode: Camera.constants.TorchMode.off,
-        captureQuality: Camera.constants.CaptureQuality.medium
-      },
       captureImgURI: null,
       loaded: true
     };
@@ -51,11 +40,8 @@ export default class DefaultScreen extends Component {
 
     const thenFun = () => {
       if( isGoHome ){
-        if( this.uploadType === 'newUpload' ){
-          this.props.navigation.navigate('Home');
-        }
-        else if( this.uploadType === 'uploadSales' ){
-          this.props.navigation.goBack();
+        this.props.navigation.goBack();
+        if( this.uploadType === 'uploadSales' ){
           DeviceEventEmitter.emit('salesCaptureDone');
         }
       } else {
@@ -120,9 +106,7 @@ export default class DefaultScreen extends Component {
   }
 
   switchToScanner(){
-    //this.props.switchMode("scanner");
-    this.props.navigation.navigate("Scanner");
-    //this.props.navigation.goBack();
+    this.props.switchMode("scanner");
   }
 
   componentWillMount(){
@@ -136,25 +120,10 @@ export default class DefaultScreen extends Component {
   render() {
     let {captureImgURI} = this.state;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         {
           !captureImgURI ?
           <View style={styles.cameraWrap}>
-            <Camera
-              ref={(cam) => {
-                this.camera = cam;
-              }}
-              style={styles.camera}
-              aspect={this.state.camera.aspect}
-              captureTarget={this.state.camera.captureTarget}
-              type={this.state.camera.type}
-              orientation={this.state.camera.orientation}
-              torchMode={this.state.camera.torchMode}
-              captureQuality={this.state.camera.captureQuality}
-              barCodeTypes={['qr']}
-              defaultTouchToFocus={true}
-              mirrorImage={false}
-            />
             <View style={styles.outsideCorner}>
               <View style={[styles.corner, {
                 left: 0,
@@ -246,15 +215,15 @@ export default class DefaultScreen extends Component {
         {
           this.uploadType === "newUpload" ?
             <View style={styles.leftAction}>
-              <TouchableOpacity
-                onPress={this.switchToScanner.bind(this)}
-              >
-                <Icon size="large" name="qrcode" style={styles.actionIcon}/>
-                <Text style={styles.actionText}>扫码</Text>
-              </TouchableOpacity>
+              <Text style={styles.actionText}>扫码</Text>
+              <Icon size="large"
+                    name="qrcode-land"
+                    style={styles.actionIcon}
+                    onPress={this.switchToScanner.bind(this)}
+              />
             </View>
             :
-          <Text style={[styles.leftAction, {left: 2, top: -5, padding: 8, color: '#fff'}]}
+          <Text style={styles.leftCancel}
             onPress={this.handleBack.bind(this)}
           >
             取消
@@ -277,30 +246,21 @@ export default class DefaultScreen extends Component {
   }
 
   switchTorchMode(){
-    this.state.camera.torchMode = this.state.camera.torchMode === 'on' ? 'off' : 'on';
-    this.setState({
-      camera: this.state.camera
-    });
+    this.props.switchTorchMode();
   }
 
   takePicture() {
-    if (this.camera) {
-      this.camera.capture()
-        .then((res) => {
-          this.setState({
-            captureImgURI: res.data
-          });
-        })
-        .catch(err => Toast.show("拍照出错，请重试！"));
-    }
+    this.props.takePicture()
+      .then((res) => {
+        this.setState({
+          captureImgURI: res.data
+        });
+      })
+      .catch(err => Toast.show("拍照出错，请重试！"));
   }
 
   handleBack(){
-    if( this.uploadType === 'uploadSales' ) {
-      this.props.navigation.goBack();
-    } else {
-      this.props.navigation.navigate("Home");
-    }
+    this.props.navigation.goBack();
   }
 }
 
@@ -309,15 +269,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   cameraWrap: {
-    flex: 1
-  },
-  camera: {
-    flex: 1
+    flex: 1,
+    position: "relative"
   },
   iconBack: {
     position: "absolute",
     left: '50%',
-    top: Platform.OS === 'ios' ? 15 : 5,
+    top: 5,
     marginLeft: -25
   },
   bottom: {
@@ -332,21 +290,28 @@ const styles = StyleSheet.create({
   },
   leftAction: {
     position: 'absolute',
-    left: 16,
-    top: -25,
+    left: -5,
+    top: 5,
     padding: 0,
-    transform: [
-      {
-        rotate: "90deg"
-      },
-      {
-        translateX: 23
-      }
-    ]
+    flexDirection: 'row'
   },
   actionText: {
     color: '#fff',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginRight: 8,
+    transform: [{
+      rotate: '90deg'
+    }]
+  },
+  leftCancel: {
+    position: 'absolute',
+    left: 5,
+    top: 15,
+    padding: 8,
+    color: '#fff',
+    transform: [{
+      rotate: '90deg'
+    }]
   },
   torchStyle: {
     position: "absolute",
@@ -409,22 +374,28 @@ const styles = StyleSheet.create({
   },
   redoWrap: {
     position: 'absolute',
-    right: -20,
-    bottom: 0,
-    padding: 30,
-    transform: [
-      {
-        rotate: '90deg'
-      }
-    ]
+    right: 0,
+    bottom: 10
   },
   redoButton: {
+    height: 150,
+    width: 130,
     justifyContent: 'center',
     alignItems: 'center'
   },
   redoHint: {
     color: '#fff',
-    backgroundColor: 'transparent'
+    transform: [
+      {
+        rotate: '90deg'
+      },
+      {
+        translateX: 40,
+      },
+      {
+        translateY: -30
+      }
+    ]
   },
   outsideCorner: {
     position: 'absolute',

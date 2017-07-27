@@ -11,12 +11,10 @@ import {
 import Toast from 'react-native-root-toast';
 import Header from '../../component/header';
 import Icon from '../../component/icon';
-import {QRScannerView} from '../../component/qrscanner';
+import {QRScannerRectView} from '../../component/qrscanner';
 import Spinner from '../../component/spinner';
 import fetch from '../../service/fetch';
 import {session} from '../../service/auth';
-
-let isQRCodeRead = false;
 
 function parseDate(dateStr){
   dateStr = String(dateStr);
@@ -29,8 +27,7 @@ export default class DefaultScreen extends Component {
 
     this.state = {
       loaded: true,
-      cameraEnable: false,
-      torchMode: 'off'
+      cameraEnable: false
     };
 
     this.timeId = null;
@@ -85,19 +82,15 @@ export default class DefaultScreen extends Component {
   }
 
   handleCapture() {
-    //this.props.switchMode("camera");
-    this.props.navigation.navigate("Camera");
+    this.props.switchMode("camera");
   }
 
   resumeScan(){
-    //this.isScaned = false;
-    isQRCodeRead = false;
+    this.isScaned = false;
   }
 
   switchTorchMode() {
-    this.setState({
-      torchMode: this.state.torchMode === 'on' ? 'off' : 'on'
-    });
+    this.props.switchTorchMode();
   }
 
   componentDidMount() {
@@ -112,12 +105,17 @@ export default class DefaultScreen extends Component {
     if( this.timeId ) clearTimeout(this.timeId);
   }
 
+  componentWillReceiveProps(nextProps){
+    if( nextProps.barCode ){
+      this.barcodeReceived(nextProps.barCode);
+    }
+  }
+
   render() {
     let {loaded, cameraEnable} = this.state;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <Header
-          style={styles.header}
           left={(
             <Icon name="arrow-left-white" onPress={this.handleGoBack.bind(this)}/>
           )}
@@ -128,18 +126,14 @@ export default class DefaultScreen extends Component {
           二维码扫描
         </Header>
         <View style={styles.cameraWrap}>
-          {
-            <QRScannerView
-              onBarCodeRead={this.barcodeReceived.bind(this)}
-              renderTopBarView={() => function () {}}
-              renderBottomMenuView={() => function () {}}
-              hintText="请将发票左上角的二维码放入框内即可自动扫描"
-              hintTextPosition={150}
-              style={styles.preview}
-              torchMode={this.state.torchMode}
-              //barCodeTypes={['qr']}
-            />
-          }
+          <QRScannerRectView
+            onBarCodeRead={this.barcodeReceived.bind(this)}
+            renderTopBarView={() => function () {}}
+            renderBottomMenuView={() => function () {}}
+            hintText="请将发票左上角的二维码放入框内即可自动扫描"
+            hintTextPosition={80}
+            style={styles.preview}
+          />
         </View>
         {
           this._renderMenu()
@@ -181,12 +175,10 @@ export default class DefaultScreen extends Component {
   }
 
   barcodeReceived(e) {
-    //if( this.isScaned ) return;
-    if( isQRCodeRead ) return;
+    if( this.isScaned ) return;
     if (this.timeId) clearTimeout(this.timeId);
 
-    //this.isScaned = true;
-    isQRCodeRead = true;
+    this.isScaned = true;
 
     let isExpectQrcode = true;
     let ret = e.data.split(",");
@@ -226,21 +218,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  header: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    zIndex: 1000
-  },
   cameraWrap: {
     flex: 1
   },
   bottom: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    right: 0,
+    position: 'relative',
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#48acfa'
@@ -265,8 +247,7 @@ const styles = StyleSheet.create({
   },
   captureHintText: {
     color: "#fff",
-    textAlign: 'center',
-    backgroundColor: 'transparent'
+    textAlign: 'center'
   },
   captureHintIcon: {
     width: 30,

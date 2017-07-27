@@ -3,7 +3,4 @@
  * Function: 入口类
  * Desc:
  */
-
-import QRScannerView from './QRScanner';
-
-export {QRScannerView}
+export {QRScannerView, QRScannerRectView} from './QRScanner'
