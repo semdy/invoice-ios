@@ -120,11 +120,11 @@ class InvoiceList extends PureComponent {
     ];
   }
 
-  handleQuery(){
+  handleQuery(isSearch){
     this.page = 1;
     this.dataMap = {};
     this.checkedItems = [];
-    this.fetchData(this.refs.code.value, this.state.invoiceStatus, this.state.invoiceDay, this.page);
+    this.fetchData(this.refs.code.value, this.state.invoiceStatus, this.state.invoiceDay, this.page, isSearch);
   }
 
   handleDel(){
@@ -166,7 +166,7 @@ class InvoiceList extends PureComponent {
     this.checkedItems = this.checkedItems.filter(item => item.checked === true);
   }
 
-  fetchData(invoiceNumber="", status="", day="", page=1){
+  fetchData(invoiceNumber="", status="", day="", page=1, isSearch=true){
     this.setState({
       loaded: false
     });
@@ -184,7 +184,8 @@ class InvoiceList extends PureComponent {
     fetch.get("invoiceList", params).then(res => {
       if( res.invoiceList.length === 0 ){
         this.setState({
-          data: [],
+          data: isSearch ? [] : this.state.data,
+          total: isSearch ? 0 : this.state.total,
           loaded: true
         });
 
@@ -207,7 +208,7 @@ class InvoiceList extends PureComponent {
 
   appendData(){
     if( !this.state.loaded ) return;
-    this.fetchData(this.refs.code.value, this.state.invoiceStatus, this.state.invoiceDay, ++this.page);
+    this.fetchData(this.refs.code.value, this.state.invoiceStatus, this.state.invoiceDay, ++this.page, false);
   }
 
   keyExtractor(item) {
@@ -300,7 +301,7 @@ class InvoiceList extends PureComponent {
         <View style={styles.queryContainer}>
           <View style={styles.queryItem}>
             <Button
-              onPress={this.handleQuery.bind(this)}
+              onPress={this.handleQuery.bind(this, true)}
               style={[{flex: 1}, styles.button]}
             >
               查询
