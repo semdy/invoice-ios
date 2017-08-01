@@ -78,7 +78,7 @@ class Home extends PureComponent {
   }
 
   handleCamClick(){
-    this.props.navigation.navigate('Scanner', {mode: 'scanner'});
+    this.props.navigation.navigate('ScanCamera', {mode: 'scanner'});
   }
 
   handleSetPress(){
