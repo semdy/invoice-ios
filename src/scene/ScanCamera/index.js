@@ -74,7 +74,6 @@ export default class ScanCamera extends PureComponent {
           style={{flex: 1}}
           onBarCodeRead={this.barcodeReceived.bind(this)}
           torchMode={this.state.torchMode}
-          barCodeTypes={['qr']}
           defaultTouchToFocus={true}
           aspect={this.state.camera.aspect}
           captureTarget={this.state.camera.captureTarget}
