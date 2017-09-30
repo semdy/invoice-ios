@@ -19,6 +19,8 @@ import {session, logout} from '../../service/auth';
 import {confirm} from '../../utils';
 import Toast from 'react-native-root-toast';
 
+import {resetAction} from '../../routes/actions';
+
 class MyInfo extends PureComponent {
 
   constructor(props){
@@ -78,9 +80,14 @@ class MyInfo extends PureComponent {
   handleLogout(){
     confirm("确定退出并重新登录吗?").then(() => {
       logout().then(() => {
-        this.props.navigation.navigate('Login');
+        this.props.navigation.dispatch(resetAction('Login'));
       });
     }, () => {});
+  }
+
+  handleGoBack(){
+    this.props.navigation.goBack();
+    //this.props.navigation.navigate("Home");
   }
 
   componentDidMount(){
@@ -109,7 +116,7 @@ class MyInfo extends PureComponent {
       <View style={styles.container}>
         <Header
           left={(
-            <Icon name="arrow-left-white" onPress={this.props.navigation.navigate.bind(this,'Home')}/>
+            <Icon name="arrow-left-white" onPress={this.handleGoBack.bind(this)}/>
           )}
           right={(
               <Text

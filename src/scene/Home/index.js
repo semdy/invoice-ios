@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  DeviceEventEmitter
 } from 'react-native';
 
 import fetch from '../../service/fetch';
@@ -15,7 +16,7 @@ import Button from '../../component/button';
 import ListItem from '../../component/listitem';
 import ProgressCircle from 'react-native-progress-circle';
 import Spinner from '../../component/spinner';
-import Toast from 'react-native-root-toast';
+import {resetAction} from '../../routes/actions';
 
 class Home extends PureComponent {
 
@@ -40,9 +41,15 @@ class Home extends PureComponent {
       });
       this.doRefresh();
     }, err => {
-      this.props.navigation.navigate("Login");
+      this.props.navigation.dispatch(resetAction('Login'));
     });
+
+    this.subscription = DeviceEventEmitter.addListener('homeRefresh', this.doRefresh.bind(this));
   }
+
+  componentWillUnmount(){
+    this.subscription.remove();
+  };
 
   doRefresh(){
     this.fetchData(this.day);

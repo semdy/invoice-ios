@@ -211,6 +211,11 @@ class InvoiceList extends PureComponent {
     this.fetchData(this.refs.code.value, this.state.invoiceStatus, this.state.invoiceDay, ++this.page, false);
   }
 
+  handleGoBack() {
+    //this.props.navigation.navigate("Home");
+    this.props.navigation.goBack();
+  }
+
   keyExtractor(item) {
     return item.key;
   }
@@ -293,7 +298,7 @@ class InvoiceList extends PureComponent {
       <View style={styles.container}>
         <Header
           left={(
-            <Icon name="arrow-left-white" onPress={this.props.navigation.navigate.bind(this,'Home')}/>
+            <Icon name="arrow-left-white" onPress={this.handleGoBack.bind(this)}/>
           )}
         >
           发票列表

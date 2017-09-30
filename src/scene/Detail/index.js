@@ -130,8 +130,8 @@ class Detail extends PureComponent {
   }
 
   handleGoBack(){
-    //this.props.navigation.goBack();
-    this.props.navigation.navigate("InvoiceList");
+    this.props.navigation.goBack();
+    //this.props.navigation.navigate("InvoiceList");
   }
 
   showPhoto(){
@@ -305,6 +305,7 @@ class Detail extends PureComponent {
                   <ButtonGroup
                     items={[{text: '发票信息'}, {text: '销货明细'}]}
                     activeIndex={activeIndex}
+                    autoWidth={true}
                     onPress={this.handleTabClick.bind(this)}
                   />
                 </View>}
@@ -396,6 +397,8 @@ const styles = StyleSheet.create({
     ]
   },
   tabBar: {
+    width: '70%',
+    alignSelf: 'center',
     paddingVertical: 8
   },
   listTable: {

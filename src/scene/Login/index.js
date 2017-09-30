@@ -13,6 +13,7 @@ import FormItem from '../../component/formitem';
 import Spinner from '../../component/spinner';
 import LinearGradient from 'react-native-linear-gradient';
 import {login, session} from '../../service/auth';
+import {resetAction} from '../../routes/actions';
 
 import Toast from 'react-native-root-toast';
 
@@ -36,7 +37,7 @@ class Login extends PureComponent {
     login(username, password).then(userinfo => {
       this.refs.password.blur();
       session.set(userinfo);
-      this.props.navigation.navigate('Home', userinfo);
+      this.props.navigation.dispatch(resetAction('Home', userinfo));
     }, errMsg => {
       Toast.show(errMsg);
       this.setState({

@@ -11,23 +11,32 @@ class ButtonGroup extends PureComponent {
     super(props);
   }
   render() {
-    let {activeIndex, items, size, vertical, onPress} = this.props;
+    let {activeIndex, items, size, wrapStyle, buttonStyle, textStyle, autoWidth, vertical, onPress} = this.props;
     return (
         <View
-          style={[styles.buttonWrap, vertical ? {} : {flexDirection: 'row',}]}
+          style={[styles.buttonWrap, vertical||{flexDirection: 'row',}, wrapStyle]}
         >
           {
             items.map((item, i) => {
               return (
                 <TouchableWithoutFeedback
                   key={i}
-                  style={{width: vertical ? "100%" : 1/items.length*100 + "%"}}
+                  style={[vertical ? {width: '100%'} : {flex: 1}]}
                   onPress={onPress.bind(this, i, item)}
                 >
                   <View
-                    style={[styles.button, styles[size], activeIndex === i && styles.selected, i !== 0 && (vertical ? styles.nextButtonsV : styles.nextButtonsH), i === 0 && (vertical ? styles.firstButtonV : styles.firstButtonH), (i === items.length - 1) && (vertical ? styles.lastButtonV : styles.lastButtonH) ]}
+                    style={[
+                      styles.button,
+                      styles[size],
+                      (autoWidth && !vertical) && {flex: 1},
+                      activeIndex === i && styles.selected,
+                      i !== 0 && (vertical ? styles.nextButtonsV : styles.nextButtonsH),
+                      i === 0 && (vertical ? styles.firstButtonV : styles.firstButtonH),
+                      (i === items.length - 1) && (vertical ? styles.lastButtonV : styles.lastButtonH),
+                      buttonStyle
+                    ]}
                   >
-                    <Text style={[styles.text, activeIndex === i && styles.textSelected]}>
+                    <Text style={[styles.text, activeIndex === i && styles.textSelected, textStyle]}>
                       {
                         item.text
                       }
@@ -52,7 +61,7 @@ const styles = StyleSheet.create({
     borderColor: '#38adff',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 12
+    paddingHorizontal: 15
   },
   normal: {
     height: 38
@@ -108,7 +117,11 @@ ButtonGroup.defaultProps = {
   activeIndex: 0,
   items: [],
   size: 'normal',
+  wrapStyle: {},
+  buttonStyle: {},
+  textStyle: {},
   vertical: false,
+  autoWidth: false,
   onPress: function () {}
 };
 
@@ -121,7 +134,11 @@ ButtonGroup.propTypes = {
     })
   ),
   size: PropTypes.string,
+  wrapStyle: PropTypes.object,
+  buttonStyle: PropTypes.object,
+  textStyle: PropTypes.object,
   vertical: PropTypes.bool,
+  autoWidth: PropTypes.bool,
   onPress: PropTypes.func
 };
 
